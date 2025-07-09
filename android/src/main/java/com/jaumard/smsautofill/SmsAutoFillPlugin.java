@@ -53,10 +53,13 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
     private Result pendingHintResult;
     private MethodChannel channel;
     private SmsBroadcastReceiver broadcastReceiver;
-    private final PluginRegistry.ActivityResultListener activityResultListener = new PluginRegistry.ActivityResultListener() {
+    private final PluginRegistry.ActivityResultListener activityResultListener = new PluginRegistry.ActivityResultListener() {        
+
+        Log.i("On Activity Result Listener Init");
 
         @Override
         public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
+            Log.i("On Activity Result", "requestCode: " + requestCode + ", resultCode: " + resultCode);
             try {
                 if (requestCode == SmsAutoFillPlugin.PHONE_HINT_REQUEST) {
                     Log.i("SmsAutoFillPlugin", "onActivityResult: requestCode: " + requestCode + ", resultCode: " + resultCode);

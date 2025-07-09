@@ -59,14 +59,17 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
         public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
             try {
                 if (requestCode == SmsAutoFillPlugin.PHONE_HINT_REQUEST) {
+                    Log.i("SmsAutoFillPlugin", "onActivityResult: requestCode: " + requestCode + ", resultCode: " + resultCode);
                     if (resultCode == Activity.RESULT_OK && data != null) {
+                        Log.i("SmsAutoFillPlugin", "onActivityResult: data is not null. Before fetching phone number.");
                         String phoneNumber =
                                 Identity.getSignInClient(activity).getPhoneNumberFromIntent(data);
-                        Log.d("PhoneHint", "Raw phone number: " + phoneNumber);
+                        Log.i("Raw phone number: " + phoneNumber);
                         if (phoneNumber != null) {
                             phoneNumber = phoneNumber.replaceAll("[^\\d]", "");
                             if (phoneNumber.length() >= 10) {
                                 phoneNumber = phoneNumber.substring(phoneNumber.length() - 10);
+                                Log.i("phoneNumber after formatting: " + phoneNumber);
                             } else {
                                 phoneNumber = null;
                             }

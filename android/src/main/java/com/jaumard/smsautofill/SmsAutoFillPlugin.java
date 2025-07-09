@@ -62,6 +62,15 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
                     if (resultCode == Activity.RESULT_OK && data != null) {
                         String phoneNumber =
                                 Identity.getSignInClient(activity).getPhoneNumberFromIntent(data);
+                        Log.d("PhoneHint", "Raw phone number: " + phoneNumber);
+                        if (phoneNumber != null) {
+                            phoneNumber = phoneNumber.replaceAll("[^\\d]", "");
+                            if (phoneNumber.length() >= 10) {
+                                phoneNumber = phoneNumber.substring(phoneNumber.length() - 10);
+                            } else {
+                                phoneNumber = null;
+                            }
+                        }
                         pendingHintResult.success(phoneNumber);
                     } else {
                         try {

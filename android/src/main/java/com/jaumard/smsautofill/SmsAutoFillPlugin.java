@@ -58,13 +58,17 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
         @Override
         public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
             try {
-                if (requestCode == SmsAutoFillPlugin.PHONE_HINT_REQUEST && pendingHintResult != null) {
+                if (requestCode == SmsAutoFillPlugin.PHONE_HINT_REQUEST) {
                     if (resultCode == Activity.RESULT_OK && data != null) {
                         String phoneNumber =
                                 Identity.getSignInClient(activity).getPhoneNumberFromIntent(data);
                         pendingHintResult.success(phoneNumber);
                     } else {
-                        pendingHintResult.success(null);
+                        try {
+                            pendingHintResult.success(null);
+                        } catch (Exception error) {
+                            System.out.println(error);
+                        }
                     }
                     return true;
                 }
@@ -136,12 +140,12 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
     @TargetApi(Build.VERSION_CODES.ECLAIR)
     private void requestHint() {
 
-        if (!isSimSupport()) {
-            if (pendingHintResult != null) {
-                pendingHintResult.success(null);
-            }
-            return;
-        }
+        // if (!isSimSupport()) {
+        //     if (pendingHintResult != null) {
+        //         pendingHintResult.success(null);
+        //     }
+        //     return;
+        // }
 
         GetPhoneNumberHintIntentRequest request =
                 GetPhoneNumberHintIntentRequest.builder().build();
@@ -190,14 +194,14 @@ public class SmsAutoFillPlugin implements FlutterPlugin, ActivityAware, MethodCa
                 // silent catch to avoir crash if receiver is not registered
             }
             broadcastReceiver = null;
-        }
+        }`
     }
 
     /**
      * This {@code FlutterPlugin} has been associated with a {@link FlutterEngine} instance.
      *
      * <p>Relevant resources that this {@code FlutterPlugin} may need are provided via the {@code
-     * binding}. The {@code binding} may be cached and referenced until {@link #onDetachedFromEngine(FlutterPluginBinding)}
+     * binding}. The {@code binding} may be cached and referenced until `{@link #onDetachedFromEngine(FlutterPluginBinding)}
      * is invoked and returns.
      */
     @Override
